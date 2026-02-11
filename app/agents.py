@@ -24,6 +24,13 @@ agent = create_agent(
 
 chain = prompt | llm
 
-def run_agents(question: str) -> str:
+def run_genai(question: str) -> str:
     response = chain.invoke({"question": question})
     return response.content
+
+# Run the agent
+def run_agent2(question: str) -> str:
+    result = agent.invoke(
+    {"messages": [{"role": "user", "content": question}]}
+    )
+    return result['messages'][-1].content

@@ -4,9 +4,9 @@ python  programming language
 pip package manager
 GOOGLE_GEMINI_API_KEY from ai studio
 
+### STEPS 
 
-
-python -m venv venv
+python/python3 -m venv venv
 
 
 pip install requirements.txt
