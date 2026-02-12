@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI README Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6158b4, #a62baa, #36365a);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            width: 420px;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 0 20px rgba(96, 49, 137, 0.3);
+            text-align: center;
+            color: white;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            background: #f5ccea;
+            color: black;
+        }
+
+        button {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #8a2be2, #5d00ff);
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px purple;
+        }
+
+        .status {
+            margin-top: 12px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main">
+    <h2>README Generator 🤖</h2>
+
+    <div class="input-area">
+        <input type="text" id="folderPath" placeholder="Enter full folder path" />
+        <button onclick="generateReadme()">Generate 📩</button>
+    </div>
+
+    <div class="status" id="status"></div>
+</div>
+
+<script>
+async function generateReadme() {
+    const folderPath = document.getElementById("folderPath").value;
+    const status = document.getElementById("status");
+
+    if (!folderPath) {
+        status.innerText = "Please enter folder path.";
+        return;
+    }
+
+    status.innerText = "Generating README...";
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/genai/readme", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                folder_path: folderPath
+            })
+        });
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "README.md";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        status.innerText = "README downloaded successfully!";
+    } catch (error) {
+        status.innerText = "Error generating README.";
+    }
+}
+</script>
+
+</body>
+</html>

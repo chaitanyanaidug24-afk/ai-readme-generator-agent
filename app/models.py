@@ -5,3 +5,6 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     answer: str
+
+class ReadmeRequest(BaseModel):
+    folder_path: str
